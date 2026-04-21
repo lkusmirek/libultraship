@@ -37,7 +37,9 @@ Fast3dWindow::Fast3dWindow(std::shared_ptr<Ship::Gui> gui) : Ship::Window(gui) {
         AddAvailableWindowBackend(Ship::WindowBackend::FAST3D_SDL_METAL);
     }
 #endif
+#ifndef __UWP__
     AddAvailableWindowBackend(Ship::WindowBackend::FAST3D_SDL_OPENGL);
+#endif
 }
 
 Fast3dWindow::Fast3dWindow(std::vector<std::shared_ptr<Ship::GuiWindow>> guiWindows)
