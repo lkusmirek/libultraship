@@ -23,6 +23,10 @@
 #include <pwd.h>
 #endif
 
+#ifdef __UWP__
+#include <SDL2/SDL.h>
+#endif
+
 namespace Ship {
 std::weak_ptr<Context> Context::mContext;
 
@@ -142,7 +146,12 @@ bool Context::InitLogging(spdlog::level::level_enum debugBuildLogLevel,
         sinks.push_back(systemConsoleSink);
 #endif
 
+#ifndef __UWP__
         auto logPath = GetPathRelativeToAppDirectory(("logs/" + GetName() + ".log"));
+#else
+        const char* prefPath = SDL_GetPrefPath("", "");
+        auto logPath = (std::string(prefPath)) + GetName() + ".log";
+#endif
         auto fileSink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(logPath, 1024 * 1024 * 10, 10);
         sinks.push_back(fileSink);
 #ifdef _DEBUG
